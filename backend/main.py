@@ -1,6 +1,7 @@
 """AimRabs: a minimal same-origin API and static frontend server."""
 
 from pathlib import Path
+import os
 import sqlite3
 import time
 from uuid import uuid4
@@ -12,7 +13,12 @@ from pydantic import BaseModel, Field
 DURATION_SECONDS = 60
 MAX_SCORE = 6000  # Sanity cap, not proof of valid clicks.
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATABASE = BASE_DIR / "backend" / "aimrabs.sqlite3"
+DATABASE = Path(
+    os.environ.get(
+        "DB_PATH",
+        str(BASE_DIR / "backend" / "aimrabs.sqlite3")
+    )
+)
 FRONTEND = BASE_DIR / "frontend"
 
 app = FastAPI(title="AimRabs API")
